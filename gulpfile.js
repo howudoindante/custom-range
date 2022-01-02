@@ -1,4 +1,4 @@
-const { src, series, dest, parallel } = require("gulp");
+const { src, series, dest, parallel, task } = require("gulp");
 
 const scss = require("gulp-sass")(require("sass"));
 const rename = require("gulp-rename");
@@ -11,10 +11,8 @@ const browsersync = require("browser-sync").create();
 const gulp_watch = require("gulp-watch");
 const include = require("gulp-include");
 let isDev = false;
-
-
+const fs = require('fs');
 const browserify = require("browserify");
-
 const buffer = require('vinyl-buffer');
 
 const gulpPlumber = require("gulp-plumber");
@@ -23,10 +21,12 @@ const uglify = require("gulp-uglify");
 const gulpif = require('gulp-if');
 const autoprefixer = require("gulp-autoprefixer");
 const cssmin = require("gulp-cssmin");
-
-
+const concat = require('gulp-concat');
+const gulpUtil = require("gulp-util");
+const jsdoc2md = require('jsdoc-to-markdown');
 const routes = {
     source: {
+        readme: path.join(__dirname, "README.md"),
         html: path.join(__dirname, "index.html"),
         scss: path.join(__dirname, source_folder) + "styles/*.scss",
         js: [
@@ -36,9 +36,10 @@ const routes = {
     },
     build: {
         html: path.join(__dirname, destination_folder),
+        readme: path.join(__dirname),
         directory: path.join(__dirname, destination_folder),
         css: path.join(__dirname, destination_folder, "css/"),
-        js: path.join(__dirname, destination_folder, "js/")
+        js: path.join(__dirname, destination_folder, "js/"),
     },
     watch: {
         html: path.join(__dirname, "index.html"),
@@ -85,17 +86,15 @@ function SCSS() {
         .pipe(autoprefixer({
             cascade: false
         }))
-        .pipe(cssmin())
-        .pipe(gulpif(isDev, sourcemaps.write()))
-        // .pipe(
-        //     rename(function (path) {
-        //         path.basename = path.dirname;
-        //     })
-        // )
         .pipe(dest(routes.build.css))
-
-
-
+        .pipe(cssmin())
+        .pipe(
+            rename(function (path) {
+                path.basename = path.basename + ".min";
+            })
+        )
+        .pipe(gulpif(isDev, sourcemaps.write()))
+        .pipe(dest(routes.build.css))
         .pipe(browsersync.stream());
 }
 
@@ -112,15 +111,16 @@ function JAVASCRIPT() {
             file.contents = browserify(file.path, { debug: isDev }).transform("babelify").bundle();
         }))
         .pipe(gulpPlumber())
-        // .pipe(
-        //     rename(function (path) {
-        //         path.basename = path.basename + ".min";
-        //     })
-        // )
+        .pipe(dest(routes.build.js))
         .pipe(buffer())
         .pipe(gulpif(isDev, sourcemaps.init({ loadMaps: true })))
         .pipe(uglify())
         .pipe(gulpif(isDev, sourcemaps.write()))
+        .pipe(
+            rename(function (path) {
+                path.basename = path.basename + ".min";
+            })
+        )
         .pipe(dest(routes.build.js))
         .on("error", console.log)
         .pipe(browsersync.stream());
@@ -131,7 +131,13 @@ async function CLEAN() {
     await del.sync([routes.build.directory]);
 }
 
-const BUILD = series(CLEAN, SCSS, JAVASCRIPT, HTML);
+task('docs', (done) => {
+    jsdoc2md.render({ files: './src/scripts/*.js', template: fs.readFileSync('./template.hbs', 'utf8') }).then(output => fs.writeFileSync('README.md', output));
+    return done();
+})
+const DOCS = task("docs");
+
+const BUILD = series(CLEAN, SCSS, JAVASCRIPT, HTML, DOCS);
 
 
 const TASKS = isDev ? parallel(BUILD, WATCH, BSYNC) : parallel(BUILD);

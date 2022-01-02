@@ -1,0 +1,117 @@
+# Custom Range
+
+> Custom range - a ready to use presets. Here you can download the source or bundled code.
+
+
+## Features
+
+- Easy to use
+- Resposive and adaptive
+- Easy to customize
+
+## Table of Contents
+
+- [Quick start](#quick-start)
+- [Install](#install)
+- [Initialization](#initialization)
+- [Methods](#methods)
+{{#functions}}
+- [{{name}}](#{{name}})
+{{/functions}}
+
+## Quick start
+
+### Install
+
+#### Download
+
+Download minified or not compressed bundle
+
+
+#### Include with &lt;script&gt;
+
+Download and install with `script`.
+
+
+Minified:
+```html
+<!-- if you need the single range -->
+<link rel="stylesheet" href="./range.min.css">
+<!-- if you need the multi-range -->
+<link rel="stylesheet" href="./multi-range.min.css">
+
+<script src="range.min.js"></script>
+```
+Not compressed:
+```html
+<!-- if you need the single range -->
+<link rel="stylesheet" href="./range.css">
+<!-- if you need the multi-range -->
+<link rel="stylesheet" href="./multi-range.css">
+
+<script src="range.js"></script>
+```
+
+##### CDN
+
+Currently not supported
+
+### Initialization
+
+#### ES6
+
+
+```js
+import SingleRange from './directory-name'
+
+const range = new SingleRange(document.querySelector(".js-range"));
+
+const range1 = new MultiRange(
+document.querySelector(".js-multi-range-left"),
+document.querySelector(".js-multi-range-right")
+);
+```
+
+
+## Methods
+
+{{#functions}}
+### {{name}}
+
+{{#if description}}{{description}}{{/if}}
+
+{{#if since}}
+#### Since
+- {{since}}
+{{/if}}
+
+{{#if params}}
+#### Params
+{{#each params}}
+- `{{name}}`
+{{#if type.names}}- Type: `{{type.names}}`{{/if}}
+{{#if description}}- Description: {{description}}{{/if}}
+{{/each}}
+{{/if}}
+
+{{#if returns}}
+#### Returns
+{{#each returns}}
+- `{{type.names}}`
+{{/each}}
+{{/if}}
+
+{{#if examples}}
+#### Example
+{{#each examples}}
+```JS
+{{{this}}}
+```
+{{/each}}
+{{/if}}
+<a href="https://github.com/marcusblanco/custom-range/blob/master/src/scripts/range.js" target="_blank">Source
+    code</a>
+* * *
+{{/functions}}
+
+&copy; marcusblanco (Danil Duganov)

@@ -44,15 +44,15 @@
     border-radius: 50%;
     top: 50%;
     transform: translateY(-50%);
+    cursor: pointer;
+    box-shadow: none;
   }
 
   &__slider > &__thumb-left {
     left: 0%;
-    // transform: translate(-15px, -10px);
   }
   &__slider > &__thumb-right {
     right: 0%;
-    // transform: translate(15px, -10px);
   }
 
   input[type="range"] {
@@ -75,5 +75,6 @@
     border: 0 none;
     background-color: red;
     -webkit-appearance: none;
+    cursor: pointer;
   }
 }

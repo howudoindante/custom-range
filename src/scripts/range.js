@@ -1,11 +1,31 @@
+/**
+ * Parent Class.
+ *
+ */
 class Range {
     $inputRef;
     $wrapper;
-    constructor($firstInput) {
-        this.$inputRef = $firstInput;
+    /**
+     * Main range constructor
+     * @constructor
+     * @param {HTMLElement} $input - Base input of the custom range
+     */
+    constructor($input) {
+        this.$inputRef = $input;
         this._updateBarStateOnResize("resize", "optimizedResize");
     }
+    /**
+     * Abstract method
+     * @description Initialization service
+     */
     _init() { }
+    /**
+     * Protected method
+     * @param {string} type - Js event
+     * @param {string} name - Custom event name
+     * @param {object} obj - Element which call the event. Default: ***window***
+     * @description Used for update range controls position on resize
+     */
     _updateBarStateOnResize(type, name, obj) {
         obj = obj || window;
         let running = false;
@@ -22,12 +42,23 @@ class Range {
         obj.addEventListener(type, func);
     }
 }
-
-class SingleRange extends Range {
-    constructor($selector) {
-        super($selector);
+/**
+ * Class representing a single range.
+ * @extends Range
+ */
+export class SingleRange extends Range {
+    /**
+     * Single range constructor
+     * @constructor
+     * @param {HTMLElement} $input - Base input of the custom range
+     */
+    constructor($input) {
+        super($input);
         this._init();
     }
+    /**
+     * Initialization method of the single range
+     */
     _init() {
         this._createWrapper();
         this._calcActiveBarSize(this.$inputRef.value);
@@ -38,6 +69,9 @@ class SingleRange extends Range {
             this._calcActiveBarSize.bind(this, this.$inputRef.value)();
         });
     }
+    /**
+     * Used for the move input into wrapper
+     */
     _createWrapper() {
         this.$wrapper = document.createElement("div");
         this.$wrapper.classList.add("custom-range");
@@ -52,6 +86,12 @@ class SingleRange extends Range {
         $parentNode.replaceChild(this.$wrapper, this.$inputRef);
         this.$inputRef = $clonedNode;
     }
+    /**
+     * Used for get actual active bar size.
+     *
+     * Native active bar is hidden by ShadowDOM
+     * @param { number | string } value - Input current value
+     */
     _calcActiveBarSize(value) {
         const thumbWidth = this.$inputRef.dataset.thumbWidth;
         const $bar = this.$wrapper.querySelector(".custom-range__active-bar");
@@ -63,20 +103,50 @@ class SingleRange extends Range {
             "px";
     }
 }
-class MultiRange extends Range {
+/**
+ * Class representing a multi-range.
+ * @extends Range
+ */
+export class MultiRange extends Range {
     $secondInputRef;
+    /**
+     * Single range constructor
+     * @constructor
+     * @param {HTMLElement} $firstInput - First input
+     * @param {HTMLElement} $secondInput - Second input
+     */
     constructor($firstInput, $secondInput) {
         super($firstInput);
         this.$secondInputRef = $secondInput;
         this._init();
     }
+    /**
+     * Initialization method of the multi-range
+     */
     _init() {
         this._createWrapper();
-        this.$inputRef.addEventListener("input", this._calcLeftHandlersPosition.bind(this));
-        this.$secondInputRef.addEventListener("input", this._calcRightHandlersPosition.bind(this));
-        window.addEventListener("optimizedResize", this._calcLeftHandlersPosition.bind(this));
-        window.addEventListener("optimizedResize", this._calcRightHandlersPosition.bind(this));
+        this._calcLeftHandlersPosition.bind(this)();
+        this._calcRightHandlersPosition.bind(this)();
+        this.$inputRef.addEventListener(
+            "input",
+            this._calcLeftHandlersPosition.bind(this)
+        );
+        this.$secondInputRef.addEventListener(
+            "input",
+            this._calcRightHandlersPosition.bind(this)
+        );
+        window.addEventListener(
+            "optimizedResize",
+            this._calcLeftHandlersPosition.bind(this)
+        );
+        window.addEventListener(
+            "optimizedResize",
+            this._calcRightHandlersPosition.bind(this)
+        );
     }
+    /**
+     * Used for the move input's into wrapper
+     */
     _createWrapper() {
         this.$wrapper = document.createElement("div");
         this.$rangeWrapper = document.createElement("div");
@@ -113,6 +183,10 @@ class MultiRange extends Range {
         this.$inputRef = $firstInputClone;
         this.$secondInputRef = $secondInputClone;
     }
+    /**
+     * Used for get actual left thumb position and active bar start.
+     *
+     */
     _calcLeftHandlersPosition() {
         const $el = this.$inputRef;
         $el.value = Math.min(
@@ -125,6 +199,10 @@ class MultiRange extends Range {
         this.$thumbLeft.style.left = left + "px";
         this.$bar.style.left = left + $el.dataset.thumbWidth / 2 + "px";
     }
+    /**
+     * Used for get actual right thumb position and active bar end.
+     *
+     */
     _calcRightHandlersPosition() {
         const $el = this.$secondInputRef;
         $el.value = Math.max(
@@ -140,5 +218,4 @@ class MultiRange extends Range {
     }
 }
 
-const range = new SingleRange(document.querySelector(".js-range"));
-const range1 = new MultiRange(document.querySelector(".js-multi-range-left"), document.querySelector(".js-multi-range-right"));
+

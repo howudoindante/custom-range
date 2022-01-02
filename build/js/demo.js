@@ -144,6 +144,16 @@ module.exports = _typeof, module.exports.__esModule = true, module.exports["defa
 },{}],11:[function(require,module,exports){
 "use strict";
 
+var _require = require("./range"),
+    SingleRange = _require.SingleRange,
+    MultiRange = _require.MultiRange;
+
+var range = new SingleRange(document.querySelector(".js-range"));
+var range1 = new MultiRange(document.querySelector(".js-multi-range-left"), document.querySelector(".js-multi-range-right"));
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImRlbW8uanMiXSwibmFtZXMiOlsicmVxdWlyZSIsIlNpbmdsZVJhbmdlIiwiTXVsdGlSYW5nZSIsInJhbmdlIiwiZG9jdW1lbnQiLCJxdWVyeVNlbGVjdG9yIiwicmFuZ2UxIl0sIm1hcHBpbmdzIjoiOztBQUFBLGVBQW9DQSxPQUFPLENBQUMsU0FBRCxDQUEzQztBQUFBLElBQVFDLFdBQVIsWUFBUUEsV0FBUjtBQUFBLElBQXFCQyxVQUFyQixZQUFxQkEsVUFBckI7O0FBRUEsSUFBTUMsS0FBSyxHQUFHLElBQUlGLFdBQUosQ0FBZ0JHLFFBQVEsQ0FBQ0MsYUFBVCxDQUF1QixXQUF2QixDQUFoQixDQUFkO0FBQ0EsSUFBTUMsTUFBTSxHQUFHLElBQUlKLFVBQUosQ0FDWEUsUUFBUSxDQUFDQyxhQUFULENBQXVCLHNCQUF2QixDQURXLEVBRVhELFFBQVEsQ0FBQ0MsYUFBVCxDQUF1Qix1QkFBdkIsQ0FGVyxDQUFmIiwic291cmNlc0NvbnRlbnQiOlsiY29uc3QgeyBTaW5nbGVSYW5nZSwgTXVsdGlSYW5nZSB9ID0gcmVxdWlyZShcIi4vcmFuZ2VcIik7XHJcblxyXG5jb25zdCByYW5nZSA9IG5ldyBTaW5nbGVSYW5nZShkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLmpzLXJhbmdlXCIpKTtcclxuY29uc3QgcmFuZ2UxID0gbmV3IE11bHRpUmFuZ2UoXHJcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLmpzLW11bHRpLXJhbmdlLWxlZnRcIiksXHJcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLmpzLW11bHRpLXJhbmdlLXJpZ2h0XCIpXHJcbik7Il19
+},{"./range":12}],12:[function(require,module,exports){
+"use strict";
+
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {

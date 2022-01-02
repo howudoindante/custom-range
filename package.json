@@ -1,7 +1,7 @@
 {
-  "name": "gulp-starter",
+  "name": "Custom Range",
   "version": "1.0.0",
-  "description": "Gulp starter",
+  "description": "Custom Range",
   "scripts": {
     "dev": "gulp --dev",
     "build": "gulp"
@@ -10,7 +10,7 @@
     "gulp"
   ],
   "author": "marcusblanco",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
     "del": "^6.0.0",
     "gulp-concat": "^2.6.1",
@@ -20,7 +20,9 @@
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^5.0.0",
     "gulp-tap": "^2.0.0",
+    "gulp-util": "^2.2.20",
     "gulp-watch": "^5.0.1",
+    "jsdoc-to-markdown": "^7.1.0",
     "node-notifier": "^10.0.0",
     "sass": "^1.43.3"
   },
