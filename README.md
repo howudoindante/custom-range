@@ -2,6 +2,8 @@
 
 > Custom range - a ready to use presets. Here you can download the source or bundled code.
 
+Working demo : https://marcusblanco.github.io/custom-range/build/index.html
+
 ## Features
 
 - Easy to use
